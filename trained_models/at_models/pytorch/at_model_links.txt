@@ -1,0 +1,5 @@
+HTnet:  		https://drive.google.com/uc?export=download&id=1BDKHnF3xKOAZsKxqE82c7_UOrY1kzZuS
+ResNet-18:		https://drive.google.com/uc?export=download&id=1gRAwVs5G8XjTsnvHsUgNngRZ-qdrJP5X
+VGG-11:			https://drive.google.com/uc?export=download&id=1qbl7UYnfHH65Nie9sSLfCAVex1ZDTwrp
+SVM:			https://drive.google.com/uc?export=download&id=168gD8k0pMX5ffFdZ8WT2uQMpIf04rE-x
+ 
