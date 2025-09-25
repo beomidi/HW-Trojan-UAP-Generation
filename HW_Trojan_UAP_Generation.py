@@ -1,9 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[4]:
-
-
+# %%
 import torch
 import torch.nn as nn
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -64,16 +59,16 @@ def lowpass_firwin(data , ntaps, highcut, fs, window='hamming'):
 def Preprocessing(benchmark = 'AES-T700', model_name = 'HTnet'):
     match model_name:
         case 'HTnet':
-            url_regular = 'https://drive.google.com/uc?export=download&id=19c7g-MPtixhJfC3fohjPtHlfq1LepvD9'
+            url_regular = 'https://drive.google.com/uc?export=download&id=1Ol272CULYffApij2cqeBnAiI3Xx8Eso2'
             url_at = 'https://drive.google.com/uc?export=download&id=1BDKHnF3xKOAZsKxqE82c7_UOrY1kzZuS'
         case 'ResNet-18':
-            url_regular = 'https://drive.google.com/uc?export=download&id=1Jod-TXjtz_xQxSUzeJu4G9hQoNCv1jQ6'
+            url_regular = 'https://drive.google.com/uc?export=download&id=1oLh66XV2bTWic4I1Vkbd7k0sWDS2uaHT'
             url_at = 'https://drive.google.com/uc?export=download&id=1gRAwVs5G8XjTsnvHsUgNngRZ-qdrJP5X'
         case 'VGG-11':
-            url_regular = 'https://drive.google.com/uc?export=download&id=1S7ePyec-ol7C_JF4VWIaIkryvV6etiTW'
+            url_regular = 'https://drive.google.com/uc?export=download&id=1UGNfWl0IrXIBcQhUYHUtgNxGy8DCS-mB'
             url_at = 'https://drive.google.com/uc?export=download&id=1qbl7UYnfHH65Nie9sSLfCAVex1ZDTwrp'
         case 'SVM':
-            url_regular = 'https://drive.google.com/uc?export=download&id=1syjXUX5_v4pVnp0VG4D_JVg9PF9WBrHS'
+            url_regular = 'https://drive.google.com/uc?export=download&id=12yYBIFcf9OV7WdwdU7zln-hCUpMK2FlA'
             url_at = 'https://drive.google.com/uc?export=download&id=168gD8k0pMX5ffFdZ8WT2uQMpIf04rE-x'
         case default:
             sys.exit('Error: ' + model_name + ' is not supported.')
@@ -84,7 +79,7 @@ def Preprocessing(benchmark = 'AES-T700', model_name = 'HTnet'):
         with zipfile.ZipFile('./trained_models/regular_models/pytorch/' + model_name + '.zip', 'r') as zip_ref:
             for member in tqdm(zip_ref.infolist(), desc='Extracting '):
                 try:
-                    zip_ref.extract(member, './trained_models/regular_models/pytorch/')
+                    zip_ref.extract(member, './trained_models/regular_models/pytorch/' + model_name)
                 except zipfile.error as e:
                     pass
                 
@@ -96,7 +91,7 @@ def Preprocessing(benchmark = 'AES-T700', model_name = 'HTnet'):
                     zip_ref.extract(member, './trained_models/at_models/pytorch/')
                 except zipfile.error as e:
                     pass
-                
+             
     match benchmark:
         case 'AES-T400':
             url = 'https://drive.google.com/uc?export=download&id=1sxfSfYc-T_XCJCHENxbpqlvgDXvL7Ma_'
@@ -110,6 +105,12 @@ def Preprocessing(benchmark = 'AES-T700', model_name = 'HTnet'):
             url = 'https://drive.google.com/uc?export=download&id=1ZlFeANl4zllhKfjGqcUsdatgq3cRuta_'
         case 'AES-T1800':
             url = 'https://drive.google.com/uc?export=download&id=1HVBMFxq-XagymyPfK2n-XdAWrdZYFHF8'
+        case 'PIC16F84-T200':
+            url = 'https://drive.google.com/uc?export=download&id=1ReTvuFLgM1w8lxAfAUjfVY9NnKsc6iiV'
+        case 'BasicRSA-T200':
+            url = 'https://drive.google.com/uc?export=download&id=1oWwY_hE3SzP-N44XIbIdDDOUijnA3gHd'
+        case 'BasicRSA-T400':
+            url = 'https://drive.google.com/uc?export=download&id=1IFc7aElQVJa_qXIRfn7RhtVRwu0_QLWj'
         case default:
             sys.exit('Error: ' + benchmark + ' is not supported.')
                 
@@ -123,13 +124,14 @@ def Preprocessing(benchmark = 'AES-T700', model_name = 'HTnet'):
                     pass
     
     
-def KerasDataPrep(benchmark = 'AES-T700', number_of_samples = 40000, batch_size = 20):
+def KerasDataPrep(benchmark = 'AES-T700', number_of_samples = 10000, batch_size = 20):
 
     name_bms = benchmark + '_power_Temp25C'
     dir2bms_folder = './dataset/'
 
-    dirs_to_files_train, dirs_to_files_test, label_train, label_test, scaler, input_shape =                 get_splited_list_of_files_and_scaler_HT(dir2bms_folder = dir2bms_folder, name_bms=[name_bms], 
-                                                        use_enabled_trojan_folder = False,folder_numbers= [1,2], number_of_training_for_scaler=100, number_of_samples = number_of_samples)
+    dirs_to_files_train, dirs_to_files_test, label_train, label_test, scaler, input_shape = \
+                get_splited_list_of_files_and_scaler_HT(dir2bms_folder = dir2bms_folder, name_bms=[name_bms], 
+                                                        use_enabled_trojan_folder = False,folder_numbers= [1,1], number_of_training_for_scaler=100, number_of_samples = number_of_samples)
     
     train_generator = Data_Generator(dirs_to_files_train, label_train, batch_size=batch_size,
                                          dir2bms_folder=dir2bms_folder, scaler=scaler)
@@ -155,7 +157,7 @@ def KerasDataPrep(benchmark = 'AES-T700', number_of_samples = 40000, batch_size 
             
 def TorchLoadModel(model_name, benchmark):
 
-    torch_model = torch.load('trained_models/regular_models/pytorch/' + model_name + '/' + benchmark + '/' + benchmark + '.pt', map_location=torch.device('cpu'));
+    torch_model = torch.load('trained_models/regular_models/pytorch/' + model_name + '/' + benchmark + '/' + benchmark + '.pt', weights_only=False, map_location=torch.device('cpu'));
     torch_model.to(device)
     return torch_model
     
@@ -550,7 +552,7 @@ def Train_adversarial(model_name, adv_trained_model, x_train_batched, y_train_ba
         noise = torch.Tensor.repeat(torch.reshape(delta, [1, x_train_batched.shape[1]]), [x_train_batched.shape[0],1]).to(device)
 
     else:
-        noise = torch.reshape(delta, [1,1,delta.shape[0], delta.shape[1]]).repeat([1,3,1,1])#delta#torch.Tensor.repeat(torch.reshape(delta, [1, x_train_batched.shape[1]]), [x_train_batched.shape[0],1]).to(device)
+        noise = torch.reshape(delta, [1,1,50,50]).repeat([1,3,1,1])#delta#torch.Tensor.repeat(torch.reshape(delta, [1, x_train_batched.shape[1]]), [x_train_batched.shape[0],1]).to(device)
 
     trace = torch.stack([x_train_batched[i].to(device) + noise[i] if torch.argmax(y_train_batched, axis = 1)[i] == 1
                     else x_train_batched[i].to(device) for i in range(x_train_batched.shape[0])])
@@ -602,18 +604,15 @@ def main():
     argParser.add_argument("--at", action='store_true', help="Generate adversarial trained model") 
     argParser.add_argument("-o", "--output_dir", type=str, default='./results/', help="Output directory")
     argParser.add_argument("--gn", action='store_false',  default=False, help="Put a random guasian noise in the power trace") 
-    argParser.add_argument("--filter", action='store_false', default=False, help="Activate filter") 
+    argParser.add_argument("--filter", type=bool, default=False, help="Activate filter")
     argParser.add_argument("-fs", "--sample_freq", type= float, default= 100, help= "Filter sample rate")
     argParser.add_argument("-fh", "--high_freq", type= float, default= 20, help= "Filter high frequency")
-    argParser.add_argument("-f", "--fff", help="A dummy argument to fool ipython", default="1")
+    # argParser.add_argument("-f", "--fff", help="A dummy argument to fool ipython", default="1")
 
-
-
-    
     args = argParser.parse_args()
     
     
-    benchmark = str(args.benchmark)
+    benchmark =  str(args.benchmark)
     model_name = str(args.model_name) #{'HTnet', 'ResNet-18', 'VGG-11', 'SVM'}
     output_directory = str(args.output_dir)   
     sync_eps = float(args.sync_epsilon)
@@ -643,7 +642,7 @@ def main():
     
     nb_epochs = 30
     batch_size = 20
-    number_of_samples = 20000
+    number_of_samples = 10000
     workers = 16
 
     if(model_name in ['HTnet', 'SVM']):
@@ -653,7 +652,7 @@ def main():
     
     if not os.path.isdir('./dataset/' + benchmark + '_power_Temp25C') or not os.path.isdir('./trained_models/regular_models/pytorch/' + model_name):
         print('**************************************************')
-        print('**********Downloading Model and Dataset**********')
+        print('**********Downloading Model and Dataset***********')
     
     Preprocessing(benchmark = benchmark, model_name = model_name)
         
@@ -661,7 +660,7 @@ def main():
     print('******************Data is loading******************')
     create_directory(output_directory)
     
-    data_train, label_train, data_test, label_test, input_shape, nb_classes = KerasDataPrep(benchmark = 'AES-T700', number_of_samples = number_of_samples, batch_size = batch_size)
+    data_train, label_train, data_test, label_test, input_shape, nb_classes = KerasDataPrep(benchmark = benchmark, number_of_samples = number_of_samples, batch_size = batch_size)
     # Training(input_data = data_train, label = label_train,  benchmark = 'AES-T700', output_directory = output_directory, input_shape = input_shape, nb_classes = nb_classes,  batch_size = batch_size, nb_epochs = nb_epochs, workers = workers)
 
     torch_model = TorchLoadModel(model_name, benchmark)  
@@ -727,10 +726,6 @@ def main():
 if __name__ == '__main__':
     main()
     
-
-
-# In[ ]:
-
 
 
 

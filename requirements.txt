@@ -6,6 +6,7 @@ simplejson
 pandas
 scipy
 scikit-learn
+#tf2onnx
 tensorflow
 ipython
 tqdm
@@ -13,4 +14,4 @@ sk2torch
 onnx2pytorch
 gdown
 git+https://www.github.com/keras-team/keras-contrib.git
-git+https://github.com/onnx/tensorflow-onnx
+#git+https://github.com/onnx/tensorflow-onnx
