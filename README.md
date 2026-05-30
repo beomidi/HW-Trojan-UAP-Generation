@@ -63,12 +63,10 @@ ipython HW_Trojan_UAP_Generation.py -- \
 If you use this tool in your research, please cite the following paper by using the following BibTeX entry:
 
 ```bibtex
-@inproceedings{},
-  title     = {Post-Silicon Deception: Evasive Hardware Trojan through Adversarial Power Trace},
-  author    = {Behnam Omidi, Ihsen Alouani, Khaled N. Khasawneh},
-  booktitle = {IEEE Transactions on Dependable and Secure Computing (TDSC)},
-  year      = {2025},
-  pages     = {},
-  publisher = {},
-  doi       = {},
-  url       = {}
+@article{omidi2026post,
+  title={Post-Silicon Deception: Evasive Hardware Trojan Through Adversarial Power Trace},
+  author={Omidi, Behnam and Alouani, Ihsen and Khasawneh, Khaled N},
+  journal={IEEE Transactions on Dependable and Secure Computing},
+  year={2026},
+  publisher={IEEE}
+}
